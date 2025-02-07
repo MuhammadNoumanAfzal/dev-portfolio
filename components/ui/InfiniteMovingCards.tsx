@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
 interface Item {
@@ -25,9 +25,24 @@ export const InfiniteMovingCards = ({
   pauseOnHover = true,
   className,
 }: InfiniteMovingCardsProps) => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const scrollerRef = React.useRef<HTMLUListElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLUListElement>(null);
   const [start, setStart] = useState(false);
+
+  const getDirection = useCallback(() => {
+    containerRef.current?.style.setProperty(
+      "--animation-direction",
+      direction === "left" ? "forwards" : "reverse"
+    );
+  }, [direction]);
+
+  const getSpeed = useCallback(() => {
+    let duration = "40s"; // Default to normal speed
+    if (speed === "fast") duration = "20s";
+    if (speed === "slow") duration = "80s";
+
+    containerRef.current?.style.setProperty("--animation-duration", duration);
+  }, [speed]);
 
   const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
@@ -42,26 +57,11 @@ export const InfiniteMovingCards = ({
       getSpeed();
       setStart(true);
     }
-  }, []);
+  }, [getDirection, getSpeed]);
 
   useEffect(() => {
     addAnimation();
   }, [addAnimation]);
-
-  const getDirection = () => {
-    containerRef.current?.style.setProperty(
-      "--animation-direction",
-      direction === "left" ? "forwards" : "reverse"
-    );
-  };
-
-  const getSpeed = () => {
-    let duration = "40s"; // Default to normal speed
-    if (speed === "fast") duration = "20s";
-    if (speed === "slow") duration = "80s";
-
-    containerRef.current?.style.setProperty("--animation-duration", duration);
-  };
 
   return (
     <div

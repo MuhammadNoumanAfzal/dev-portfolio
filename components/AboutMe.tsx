@@ -33,8 +33,8 @@ const TAB_DATA: TabData[] = [
     id: "education",
     content: (
       <ul className="list-disc pl-4 space-y-2">
-        <li>Bachelor's in Computer Science (2024) - Ongoing</li>
-        <li>Fsc Pre Engineering - Punjab College of Information & Technology</li>
+      <li>Bachelor&apos;s in Computer Science (2024) - Ongoing</li>
+      <li>Fsc Pre Engineering - Punjab College of Information & Technology</li>
       </ul>
     ),
   },
